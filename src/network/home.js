@@ -8,7 +8,7 @@ export function getHomeMultidata() {
 
 export function getHomeGoods(type, page) {
   return request({
-    url: 'http://152.136.185.210:7878/api/m5/home/data',
+    url: '/home/data',
     params: {
       type,
       page

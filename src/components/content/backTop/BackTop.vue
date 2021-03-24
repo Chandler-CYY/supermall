@@ -10,7 +10,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .back-top {
   position: absolute;
   right: 10px;

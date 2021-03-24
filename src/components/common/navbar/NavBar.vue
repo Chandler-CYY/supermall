@@ -12,7 +12,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .home-vue {
   display: flex;
   height: 44px;

@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script>
+<script scoped>
 import BScroll from "better-scroll";
 
 export default {
@@ -15,6 +15,10 @@ export default {
     probeType: {
       type: Number,
       default: 0,
+    },
+    pullUpLoad: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -30,19 +34,30 @@ export default {
       pullUpLoad: this.pullUpLoad,
     });
     // 2监听滚动的位置
-    this.scroll.on("scroll", (position) => {
-      this.$emit("scroll", position);
-    });
+    if (this.probeType === 2 || this.probeType === 3) {
+      this.scroll.on("scroll", (position) => {
+        this.$emit("scroll", position);
+      });
+    }
+    // 3监听滚动到底部
+    if (this.pullUpLoad) {
+      this.scroll.on("pullingUp", () => {
+        this.$emit("pullingUp");
+      });
+    }
   },
   methods: {
     scrollTo(x, y, time = 300) {
       this.scroll && this.scroll.scrollTo(x, y, time);
     },
+    refresh() {
+      this.scroll && this.scroll.refresh();
+    },
     finishPullUp() {
       this.scroll.finishPullUp();
     },
-    refresh() {
-      this.scroll && this.scroll.refresh();
+    getScrollY() {
+      return this.scroll ? this.scroll.y : 0;
     },
   },
 };
