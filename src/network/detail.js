@@ -9,6 +9,12 @@ export function getDetail(iid) {
   })
 }
 
+export function getRecommends() {
+  return request({
+    url: '/recommend'
+  })
+}
+
 // 将商品价格、商品服务信息、商品标题等信息整合到一个对象当中
 export class Goods {
   constructor(itemInfo, columns, services) {

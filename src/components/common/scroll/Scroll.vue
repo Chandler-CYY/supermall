@@ -33,13 +33,13 @@ export default {
       probeType: this.probeType,
       pullUpLoad: this.pullUpLoad,
     });
-    // 2监听滚动的位置
+    // 2监听滚动的事件
     if (this.probeType === 2 || this.probeType === 3) {
       this.scroll.on("scroll", (position) => {
         this.$emit("scroll", position);
       });
     }
-    // 3监听滚动到底部
+    // 3监听滚动到顶部的事件
     if (this.pullUpLoad) {
       this.scroll.on("pullingUp", () => {
         this.$emit("pullingUp");

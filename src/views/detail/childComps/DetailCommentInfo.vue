@@ -14,7 +14,7 @@
     <div class="info-detail">
       <p>{{ commentInfo.content }}</p>
       <div class="info-other">
-        <span class="date">{{ commentInfo.created }}</span>
+        <span class="date">{{ commentInfo.created | showDate }}</span>
         <span>{{ commentInfo.style }}</span>
       </div>
       <div class="info-imgs">
@@ -42,9 +42,11 @@ export default {
     },
   },
   filters: {
-    showDate: function (value) {
-      let date = new Date(value * 1000);
-      return formatDate(date, "yyyy-MM-dd");
+    showDate(value) {
+      // 1将时间戳转化为Date对象
+      const date = new Date(value * 1000);
+      // 2将date进行格式化
+      return formatDate(date, "yyyy-MM-dd hh:mm");
     },
   },
 };
