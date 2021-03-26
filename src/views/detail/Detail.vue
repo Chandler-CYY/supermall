@@ -1,6 +1,6 @@
 <template>
   <div id="detail">
-    <detail-nav-bar class="detail-nav" @titleClick="titleClick" />
+    <detail-nav-bar class="detail-nav" @titleClick="titleClick" ref="nav" />
 
     <scroll class="content" ref="scroll" :probeType="3" @scroll="contentScroll">
       <detail-swiper :top-images="topImages" />
@@ -11,6 +11,8 @@
       <detail-comment-info ref="comment" :comment-info="commentInfo" />
       <goods-list ref="recommend" :goods="recommends" />
     </scroll>
+
+    <detail-bottom-bar />
   </div>
 </template>
 
@@ -22,6 +24,7 @@ import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
 import DetailParamInfo from "./childComps/DetailParamInfo";
 import DetailCommentInfo from "./childComps/DetailCommentInfo";
+import DetailBottomBar from "./childComps/DetailBottomBar";
 
 import Scroll from "components/common/scroll/Scroll";
 import GoodsList from "components/content/goods/GoodsList";
@@ -44,6 +47,7 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
+    DetailBottomBar,
     Scroll,
     GoodsList,
   },
@@ -128,16 +132,30 @@ export default {
       this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 100);
     },
     contentScroll(position) {
-      let y = -position.y;
-      if (y >= this.themeTopYs[3]) {
-        this.$refs.scroll.currentIndex = 3;
-      } else if (y >= this.themeTopYs[2]) {
-        this.$refs.scroll.currentIndex = 2;
-      } else if (y >= this.themeTopYs[1]) {
-        this.$refs.scroll.currentIndex = 1;
+      let positionY = -position.y;
+      // 这是我的做法
+      if (positionY >= this.themeTopYs[3]) {
+        this.$refs.nav.currentIndex = 3;
+      } else if (positionY >= this.themeTopYs[2]) {
+        this.$refs.nav.currentIndex = 2;
+      } else if (positionY >= this.themeTopYs[1]) {
+        this.$refs.nav.currentIndex = 1;
       } else {
-        this.$refs.scroll.currentIndex = 0;
+        this.$refs.nav.currentIndex = 0;
       }
+
+      // 老师的做法
+      // let length = this.themeTopYs.length;
+      // for (let i = 0; i < length; i++) {
+      //   if (
+      //     (i < length - 1 &&
+      //       positionY >= this.themeTopYs[i] &&
+      //       positionY < this.themeTopYs[i + 1]) ||
+      //     (i === length - 1 && positionY >= this.themeTopYs[i])
+      //   ) {
+      //     this.$refs.nav.currentIndex = i;
+      //   }
+      // }
     },
   },
 };
@@ -158,6 +176,6 @@ export default {
 }
 
 .content {
-  height: calc(100% - 44px);
+  height: calc(100% - 44px -49px);
 }
 </style>
