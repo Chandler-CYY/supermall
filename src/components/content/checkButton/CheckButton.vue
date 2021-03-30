@@ -2,7 +2,7 @@
   <div class="check-button" :class="{ check: isChecked }">
     <img src="~assets/img/cart/tick.svg" alt="" />
 
-    <div :class="{ check: isChecked }"></div>
+    <!-- <div :class="{ check: isChecked }"></div> -->
   </div>
 </template>
 
@@ -21,7 +21,7 @@ export default {
 <style scoped>
 .check-button {
   border-radius: 50%;
-  border: 1px solid #aaaaaa;
+  border: 2px solid #aaaaaa;
 }
 .check {
   border-color: red;

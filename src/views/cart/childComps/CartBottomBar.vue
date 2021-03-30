@@ -1,100 +1,106 @@
 <template>
-  <div class="bottom-menu">
-    <CheckButton
-      class="select-all"
-      @checkBtnClick="checkBtnClick"
-      v-model="isSelectAll"
-    ></CheckButton>
-    <span>全选</span>
-    <span class="total-price">合计: ¥{{ totalPrice }}</span>
-    <span class="buy-product">去计算({{ cartLength }})</span>
+  <div class="bottom-bar">
+    <div class="check-content">
+      <check-button
+        class="check-button"
+        :is-checked="isSelectAll"
+        @click.native="checkClick"
+      />
+      <span>全选</span>
+    </div>
+
+    <div class="price">合计：{{ totalPrice }}</div>
+
+    <div class="calculate">去计算 ({{ checkLength }})</div>
   </div>
 </template>
 
 <script>
-import CheckButton from "./CheckButton";
+import CheckButton from "components/content/checkButton/CheckButton";
+
 import { mapGetters } from "vuex";
 
 export default {
-  name: "BottomBar",
+  name: "CartBottomBar",
   components: {
     CheckButton,
   },
   computed: {
-    ...mapGetters(["cartList", "cartLength"]),
+    ...mapGetters(["cartList"]),
+    // 计算被选中商品的总价格
     totalPrice() {
-      const cartList = this.cartList;
-      return cartList
-        .filter((item) => {
-          return item.checked;
-        })
-        .reduce((preValue, item) => {
-          return preValue + item.count * item.price;
-        }, 0)
-        .toFixed(2);
+      return (
+        "￥" +
+        this.cartList
+          .filter((item) => {
+            return item.checked;
+          })
+          .reduce((preValue, item) => {
+            return preValue + item.price * item.count;
+          }, 0)
+      );
     },
-    isSelectAll: function () {
-      return this.cartList.find((item) => item.checked === false) === undefined;
+    // 计算被选中的商品的数量
+    checkLength() {
+      return this.cartList.filter((item) => item.checked).length;
+    },
+    // 检查购物车是否全选
+    isSelectAll() {
+      if (this.cartList.length === 0) return false;
+      // console.log(!num) 当num=0 ！num输出为true  当num！=0 !num输出为false
+      // return !this.cartList.filter((item) => !item.checked).length;
+      return !this.cartList.find((item) => !item.checked);
     },
   },
   methods: {
-    checkBtnClick: function () {
-      // 1.判断是否有未选中的按钮
-      let isSelectAll = this.$store.getters.cartList.find(
-        (item) => !item.checked
-      );
-
-      // 2.有未选中的内容, 则全部选中
-      if (isSelectAll) {
-        this.$store.state.cartList.forEach((item) => {
-          item.checked = true;
-        });
+    checkClick() {
+      if (this.isSelectAll) {
+        // 状态为全选时
+        this.cartList.forEach((item) => (item.checked = false));
       } else {
-        this.$store.state.cartList.forEach((item) => {
-          item.checked = false;
-        });
+        // 状态为部分选中或者全部选中时
+        this.cartList.forEach((item) => (item.checked = true));
       }
     },
   },
 };
 </script>
 
-<style scoped>
-.bottom-menu {
-  width: 100%;
-  height: 44px;
+<style>
+.bottom-bar {
+  position: relative;
+  display: flex;
+  height: 40px;
+  line-height: 40px;
   background-color: #eee;
-  position: fixed;
-  bottom: 49px;
-  left: 0;
-  box-shadow: 0 -2px 3px rgba(0, 0, 0, 0.2);
-  font-size: 14px;
-  color: #888;
-  line-height: 44px;
-  padding-left: 35px;
-  box-sizing: border-box;
-}
 
-.bottom-menu .select-all {
-  position: absolute;
-  line-height: 0;
-  left: 12px;
-  top: 13px;
-}
-
-.bottom-menu .total-price {
-  margin-left: 15px;
   font-size: 16px;
-  color: #666;
+  line-height: 40px;
 }
 
-.bottom-menu .buy-product {
-  background-color: orangered;
+.check-content {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  width: 60px;
+}
+
+.check-button {
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  margin-right: 5px;
+}
+
+.price {
+  margin-left: 30px;
+  flex: 1;
+}
+
+.calculate {
+  width: 90px;
+  background-color: red;
   color: #fff;
-  width: 100px;
-  height: 44px;
   text-align: center;
-  line-height: 44px;
-  float: right;
 }
 </style>
