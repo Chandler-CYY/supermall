@@ -39,5 +39,6 @@ export default {
 .content {
   height: 100%;
   overflow: hidden;
+  background-color: white;
 }
 </style>
