@@ -35,6 +35,10 @@ const routes = [
   {
     path: '/detail/:iid',
     component: Detail
+  },
+  {
+    path: '/profile',
+    component: Profile
   }
 ]
 const router = new VueRouter({
